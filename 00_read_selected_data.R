@@ -1,7 +1,7 @@
 library(dplyr)
 
 # Read in quality assessment columns
-df_QA <- read.csv("data/covidence_export_data_12152025.csv") %>%
+df_QA <- read.csv("data/covidence_export_data.csv") %>%
   dplyr::select(Title,
          First.Author,
          Year,
@@ -19,7 +19,7 @@ df_QA <- read.csv("data/covidence_export_data_12152025.csv") %>%
   )
 
 # Read in rest of data
-df_data <- read.csv("data/covidence_export_data_12152025.csv") %>%
+df_data <- read.csv("data/covidence_export_data.csv") %>%
   dplyr::select(Title,
          First.Author,
          Year,
@@ -98,6 +98,111 @@ df_data <- read.csv("data/covidence_export_data_12152025.csv") %>%
          Site.8.Metric.6,
          Additional.Notes
   )
+
+# Add journal type column
+pubhlth_jrnls <- c("Journal of Mechanics in Medicine and Biology",
+                  "Journal of medical and biological engineering",
+                  "Journal of Mechanics in Medicine and Biology",
+                  "Measurement in Physical Education and Exercise Science",
+                  "Journal for the Measurement of Physical Behaviour",
+                  "Measurement",
+                  "German journal of exercise and sport research",
+                  "Appl. Sci.",
+                  "European Journal of Applied Physiology",
+                  "Journal of Neuroscience Methods",
+                  "Medicine and science in sports and exercise",
+                  "Physiological measurement",
+                  "Scandinavian Journal of Medicine & Science in Sports",
+                  "Physiological Measurement",
+                  "AIMS public health",
+                  "MEDICINE & SCIENCE IN SPORTS & EXERCISE",
+                  "Journal of Applied Physiology",
+                  "Journal of Dance Medicine & Science",
+                  "Gait & Posture",
+                  "Healthcare",
+                  "Research Quarterly for Exercise and Sport",
+                  "Medicine and Science in Sports and Exercise",
+                  "Experimental Gerontology",
+                  "PLoS ONE",
+                  "Frontiers in Digital Health",
+                  "Yonsei Med Journal",
+                  "Med & Sci in Sport & Exercise",
+                  "International Journal of Exercise Science",
+                  "Statistics in medicine",
+                  " BMC Sports Science, Medicine and Rehabilita",
+                  "Med Sci Sports Exerc"
+)
+
+engin_jrnls <- c("IEEE Sensors",
+                 "2017 IEEE International Conference on Advanced Networks and Telecommunications Systems",
+                 "Sensors",
+                 "User Modeling and User-Adapted Interaction",
+                 "J of Medical Imaging and Health Informatics",
+                 "Sensors & Materials",
+                 "IEEE EMBS Conference",
+                 "International conference on pervasive computing",
+                 "Bio-medical materials and engineering",
+                 "2017 IEEE International Conference on Advanced Networks and Telecommunications Systems",
+                 "Journal of medical and biological engineering",
+                 "User Modeling and User-Adapted Interaction",
+                 "Sensors & Materials",
+                 "International conference on pervasive computing",
+                 "Bio-medical materials and engineering",
+                 "IEEE Sensors Journal",
+                 "International Journal of Computer Science and Network Security",
+                 "Ambient intelligence in everyday life",
+                 "MILITARY MEDICINE",
+                 "IEEE Transactions on Biomedical Engineering",
+                 "Telemedicine and e-Health",
+                 "IAARC",
+                 "CHI'10 Extended Abstracts on Human Factors in Computing Systems",
+                 "International Conference on Intelligent Computing",
+                 "Annual International Conference of the IEEE Engineering in Medicine and Biology Society",
+                 "Seventh International Conference on Intelligent Environments",
+                 "Expert Systems with Applications",
+                 "European Conference on Wireless Sensor Networks",
+                 "XIII Mediterranean Conference on Medical and Biological Engineering and Computing",
+                 "Health Innovations and Point-of-Care Technologies Conference",
+                 "International Conference on Biomedical Engineering",
+                 "IEEE Tenth International Conference on Intelligent Sensors, Sensor Networks and Information Processing",
+                 "IEEE Journal of Selected Topics in Signal Processing",
+                 "Proceedings of the Australasian Computer Science Week Multiconference",
+                 "International Journal of Communication Systems",
+                 "IEEE International Symposium on Consumer Electronics",
+                 "Journal of Information and Communication Technology",
+                 "International Conference on Advances in Computing, Communications and Informatics",
+                 "IEEE International Conference on Advanced Networks and Telecommunications Systems",
+                 "ASCE International Conference on Computing in Civil Engineering",
+                 "International Journal of Innovative Technology and Exploring Engineering",
+                 "Advances in 3D Image and Graphics Representation, Analysis, Computing and Information Technology: Algorithms and Applications, Proceedings of IC3DIT",
+                 "IEEE International Conference on Electro Information Technology",
+                 "International Journal of Interactive Mobile Technologies",
+                 "SENSORNETS",
+                 "Joint International Conference on Digital Arts, Media and Technology with ECTI Northern Section Conference on Electrical, Electronics, Computer and Telecommunication Engineering",
+                 "19th International Joint Conference on Computer Science and Software Engineering",
+                 "IEEE 12th International Conference on Control System, Computing and Engineering",
+                 "IEEE TRANSACTIONS ON INSTRUMENTATION AND MEASUREMENT",
+                 "Cross Strait Radio Science and Wireless Technology Conference",
+                 "Research, Invention, and Innovation Congress: Innovative Electricals and Electronics",
+                 "Adjunct proceedings of the 2023 ACM international joint conference on pervasive and ubiquitous computing & the 2023 ACM International symposium on wearable computing",
+                 "6th International Conference on Intelligent Control, Measurement and Signal Processing",
+                 "Emerging Technologies for Intelligent Systems",
+                 "Building and Environment",
+                 "IEEE JOURNAL OF BIOMEDICAL AND HEALTH INFORMATICS",
+                 "2009 Annual International Conference of the IEEE Engineering in Medicine and Biology Society",
+                 "BioMedical Engineering",
+                 "37th Annual International Conference of the IEEE Engineering in Medicine and Biology Society",
+                 "29th annual international conference of the IEEE engineering in medicine and biology society",
+                 "10th Asia-Pacific Services Computing Conference 2016 Proceedings"
+)
+
+df_data <- df_data %>%
+  mutate(Journal_category = case_when(
+    Journal %in% pubhlth_jrnls   ~ "pubhlth",
+    Journal %in% engin_jrnls ~ "engin",
+    TRUE                 ~ NA_character_
+  )) %>%
+  relocate(Journal_category, .after = Journal)
 
 
 # Save data
