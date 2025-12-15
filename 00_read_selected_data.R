@@ -101,5 +101,5 @@ df_data <- read.csv("data/covidence_export_data_12152025.csv") %>%
 
 
 # Save data
-saveRDS(df_QA, file = "data/quality_assessment_data.RDA")
-saveRDS(df_data, file = "data/extraction_data.RDA")
+saveRDS(df_QA, file = "data/quality_assessment_data.RDS")
+saveRDS(df_data, file = "data/extraction_data.RDS")
