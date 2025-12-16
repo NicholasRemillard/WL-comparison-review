@@ -193,7 +193,9 @@ engin_jrnls <- c("IEEE Sensors",
                  "BioMedical Engineering",
                  "37th Annual International Conference of the IEEE Engineering in Medicine and Biology Society",
                  "29th annual international conference of the IEEE engineering in medicine and biology society",
-                 "10th Asia-Pacific Services Computing Conference 2016 Proceedings"
+                 "10th Asia-Pacific Services Computing Conference 2016 Proceedings",
+                 "Journal of Sensors",
+                 "2024 IEEE International Symposium on Inertial Sensors and Systems"
 )
 
 df_data <- df_data %>%
@@ -204,6 +206,7 @@ df_data <- df_data %>%
   )) %>%
   relocate(Journal_category, .after = Journal)
 
+which(is.na(df_data$Journal_category))
 
 # Save data
 saveRDS(df_QA, file = "data/quality_assessment_data.RDS")
