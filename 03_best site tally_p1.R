@@ -6,6 +6,7 @@ df <- readRDS("data/extraction_data.RDS")
 df_tally <- df %>% select(
   First.Author,
   Year,
+  Physical.Activity.Outcomes.Evaluated,
   Wear.Locations.Included,
   Corresponding.Metrics.and.Sites.for.the.following.table,
   Site.1.Metric.1,
@@ -58,21 +59,34 @@ df_tally <- df %>% select(
   Site.8.Metric.6
 )
 
+# Save for next script
+saveRDS(df_tally, file = "data/data_to_tally.RDS")
+
+
 
 # Get list of unique locations
-# 1. Split the strings by either semicolon OR comma
-#    "[;,]" is a regex that means "semicolon or comma"
+
+# 1. Split by semicolon OR comma
 all_parts <- unlist(str_split(df_tally$Wear.Locations.Included, "[;,]"))
 
-# 2. Remove the "Other:" text (case insensitive)
-#    We replace it with an empty string
-clean_parts <- str_remove_all(all_parts, fixed("Other:", ignore_case = TRUE))
+# 2. Remove "Other:", trim whitespace, and convert to lowercase
+clean_parts <- all_parts %>%
+  str_remove_all(fixed("Other:", ignore_case = TRUE)) %>%
+  str_trim() %>%
+  str_to_lower()
 
-# 3. Trim whitespace from the start and end of each word
-clean_parts <- str_trim(clean_parts)
-
-# 4. Get unique values and remove any empty strings created by the cleaning
+# 3. Get unique values (removing empty strings)
 unique_locations <- unique(clean_parts[clean_parts != ""])
 
-# View the result
 print(unique_locations)
+
+# 1. Convert the vector to a data frame
+#    We name the column "location" for clarity in the CSV
+locations_df <- data.frame(location = unique_locations)
+
+# 2. Save the file
+#    row.names = FALSE prevents R from adding a numbered index column (1, 2, 3...)
+write.csv(locations_df, "unique_locations.csv", row.names = FALSE)
+
+# Use the above to organize a look up table for the next part of the script. If the above is modified,
+# the subsquent script mapping the terms must be updated as well.
