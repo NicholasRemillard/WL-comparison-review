@@ -138,6 +138,7 @@ df_clean <- df_clean[-row_indices,]
 
 
 saveRDS(df_clean, file = "data/metrics_to_tally.RDS")
+write.csv(df_clean, file = "data/metrics_to_tally.csv")
 
 saveRDS(df_keywords, file = "data/metrics_to_tally_manual.RDS")
 write.csv(df_keywords, file = "data/metrics_to_tally_manual.csv")
