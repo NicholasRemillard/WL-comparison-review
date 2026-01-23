@@ -56,7 +56,8 @@ df_tally <- df %>% select(
   Site.8.Metric.3,
   Site.8.Metric.4,
   Site.8.Metric.5,
-  Site.8.Metric.6
+  Site.8.Metric.6,
+  Additional.Notes
 )
 
 # Save for next script
